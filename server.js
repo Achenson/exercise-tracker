@@ -7,15 +7,21 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const shortid = require("shortid");
 
-const MONGOLAB_URI =
-  "mongodb+srv://Achenson:dsf3Z1IKO1GCEZtv@mongo-for-fcc-13gh5.mongodb.net/test?retryWrites=true&w=majority";
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const MONGOLAB_URI = process.env.MONGOLAB_URI
+
+
 
 mongoose
   .connect(MONGOLAB_URI, { useNewUrlParser: true })
   .then(() => console.log("connection succesfull"))
-  .catch(err => console.log(err));
+  .catch(err => console.log('connection failed' + err));
 //for FreeCodeCamp tests
 app.use(cors());
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -23,6 +29,8 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 //preventing mongoose deprecation error
 mongoose.set("useFindAndModify", false);
+
+
 
 const exerciseUserSchema = new mongoose.Schema({
   userId: {
@@ -33,6 +41,7 @@ const exerciseUserSchema = new mongoose.Schema({
   name: { type: String },
   //[] by default
   listOfExercises: []
+
 });
 
 const ExerciseUser = mongoose.model("Exercise", exerciseUserSchema);
